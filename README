@@ -1,0 +1,42 @@
+Simple class that parses out the relevant GEOIP data from the _SERVER environment variable and 
+makes the fields available through public methods.
+
+You need to have mod_geoip installed:
+
+Fedora 12/13 Instructions
+
+1. Install mod_geoip via YUM
+    
+   sudo yum install mod_geoip
+   
+2. Install the free city database from MaxMind (http://www.maxmind.com/app/installation?city=1)
+   
+   cd /usr/share/GeoIP
+   wget -N -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+   gunzip GeoLiteCity.dat.gz
+   
+3. Add the city database to the apache conf file
+
+   vim /etc/httpd/conf.d/mod_geoip.conf
+   
+   ------ mod_geoip.conf ------
+   LoadModule geoip_module modules/mod_geoip.so
+
+   <IfModule mod_geoip.c>
+     GeoIPEnable On
+     GeoIPDBFile /usr/share/GeoIP/GeoIP.dat
+     GeoIPDBFile /usr/share/GeoIP/GeoLiteCity.dat # <-- add this line
+   </IfModule>
+   ------ mod_geoip.conf ------
+   
+4.  Restart apache
+
+    sudo service httpd restart
+    
+Now you should be able to use the class:
+
+$geo = JB_GeoIp::factory($_SERVER);
+
+If you get an exception make sure you restarted apache, and make sure you have the GEO environment variables in your _SERVER array
+
+    var_dump($_SERVER);
