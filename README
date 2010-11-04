@@ -33,10 +33,15 @@ Fedora 12/13 Instructions
 
     sudo service httpd restart
     
-Now you should be able to use the class:
-
-$geo = JB_GeoIp::factory($_SERVER);
-
-If you get an exception make sure you restarted apache, and make sure you have the GEO environment variables in your _SERVER array
+5.   Now you should be able to use the class:
+    
+    $geo = JB_GeoIp::factory($_SERVER);
+    $geo->getCity();        // Returns the city name e.g. Toronto
+    $geo->getCountryName(); // Returns the country name e.g. Canada
+    $geo->getLongitude();   // Return the longitude e.g. -79.41670
+    
+    
+    If you get an exception make sure you restarted apache, and make sure you have the GEO environment 
+    variables in your _SERVER array
 
     var_dump($_SERVER);
